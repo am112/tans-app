@@ -10,33 +10,44 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ApplicationsPersonalInformationRouteImport } from './routes/applications/personal-information'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApplicationsPersonalInformationRoute =
+  ApplicationsPersonalInformationRouteImport.update({
+    id: '/applications/personal-information',
+    path: '/applications/personal-information',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/applications/personal-information': typeof ApplicationsPersonalInformationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/applications/personal-information': typeof ApplicationsPersonalInformationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/applications/personal-information': typeof ApplicationsPersonalInformationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/applications/personal-information'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/applications/personal-information'
+  id: '__root__' | '/' | '/applications/personal-information'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ApplicationsPersonalInformationRoute: typeof ApplicationsPersonalInformationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +59,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/applications/personal-information': {
+      id: '/applications/personal-information'
+      path: '/applications/personal-information'
+      fullPath: '/applications/personal-information'
+      preLoaderRoute: typeof ApplicationsPersonalInformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ApplicationsPersonalInformationRoute: ApplicationsPersonalInformationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
